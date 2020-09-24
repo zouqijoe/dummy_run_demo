@@ -22,7 +22,9 @@ pipeline {
         stage('SFDX Deploy'){
             steps{
                 echo "Deploy Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
-                salesforceDeploy()
+                //TODO:
+                // salesforceDeploy()
+                //sfdx commands
             }
         }
     }
@@ -46,6 +48,17 @@ pipeline {
         sh 'ls github-checkout'
         echo "Current Git Commit : ${env.GIT_COMMIT}"
         echo "Previous Known successful Git commit: ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT}"
+    }
+
+    def envSetup(){
+        echo "initDeployEnvRunning ${env.BUILD_ID} on ${env.JENKINS_URL}"
+        echo sh(returnStdout: true, script: 'env')
+        echo "${BUILD_URL}"
+        echo "#######################################"
+        echo "#######################################"
+        def CHANGE_TARGET = env.CHANGE_TARGET
+        echo "#######################################"
+        echo "#######################################"
     }
 
 }
