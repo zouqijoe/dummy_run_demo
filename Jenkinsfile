@@ -16,7 +16,7 @@ pipeline {
         stage('Github Sync'){
             steps{
                 echo "Github Sync"
-                // githubCheckout()
+                githubCheckout()
             }
         }
         stage('SFDX Deploy'){
