@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-import java.util.regex.Pattern
+// import java.util.regex.Pattern
 pipeline {
     agent any
 
@@ -10,13 +10,13 @@ pipeline {
         stage('Initialize Pipeline'){
             steps{
                 echo "env setupRunning ${env.BUILD_ID} on ${env.JENKINS_URL}"
-                envSetup()
+                // envSetup()
             }
         }
         stage('Github Sync'){
             steps{
                 echo "Github Sync"
-                githubCheckout()
+                // githubCheckout()
             }
         }
         stage('SFDX Deploy'){
@@ -28,37 +28,36 @@ pipeline {
             }
         }
     }
+}
 
-    def githubCheckout(){
-        dir('github-checkout'){
-            checkout scm
+def githubCheckout(){
+    dir('github-checkout'){
+        checkout scm
 
-            commitChangeSet = sh(returnStdout: true, script: 'git diff-tree --no-commit-id --name-only -r HEAD')
-            echo "github-checkout"
-            echo "${commitChangeSet}"
-            echo "${commitChangeSet.size()}"
-        }
-
-        echo "#######################################"
-        echo "#######################################"
-        echo "#######################################"
-        echo "#######################################"
-        echo "#######################################"
-
-        sh 'ls github-checkout'
-        echo "Current Git Commit : ${env.GIT_COMMIT}"
-        echo "Previous Known successful Git commit: ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT}"
+        commitChangeSet = sh(returnStdout: true, script: 'git diff-tree --no-commit-id --name-only -r HEAD')
+        echo "github-checkout"
+        echo "${commitChangeSet}"
+        echo "${commitChangeSet.size()}"
     }
 
-    def envSetup(){
-        echo "initDeployEnvRunning ${env.BUILD_ID} on ${env.JENKINS_URL}"
-        echo sh(returnStdout: true, script: 'env')
-        echo "${BUILD_URL}"
-        echo "#######################################"
-        echo "#######################################"
-        def CHANGE_TARGET = env.CHANGE_TARGET
-        echo "#######################################"
-        echo "#######################################"
-    }
+    echo "#######################################"
+    echo "#######################################"
+    echo "#######################################"
+    echo "#######################################"
+    echo "#######################################"
 
+    sh 'ls github-checkout'
+    echo "Current Git Commit : ${env.GIT_COMMIT}"
+    echo "Previous Known successful Git commit: ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT}"
+}
+
+def envSetup(){
+    echo "initDeployEnvRunning ${env.BUILD_ID} on ${env.JENKINS_URL}"
+    echo sh(returnStdout: true, script: 'env')
+    echo "${BUILD_URL}"
+    echo "#######################################"
+    echo "#######################################"
+    def CHANGE_TARGET = env.CHANGE_TARGET
+    echo "#######################################"
+    echo "#######################################"
 }
