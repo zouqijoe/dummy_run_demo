@@ -10,7 +10,7 @@ pipeline {
         stage('Initialize Pipeline'){
             steps{
                 echo "env setupRunning ${env.BUILD_ID} on ${env.JENKINS_URL}"
-                // envSetup()
+                envSetup()
             }
         }
         stage('Github Sync'){
