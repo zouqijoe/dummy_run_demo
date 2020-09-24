@@ -15,6 +15,7 @@ pipeline {
         }
         stage('Github Sync'){
             steps{
+                echo "hello!"
                 echo "Github Sync"
                 githubCheckout()
             }
