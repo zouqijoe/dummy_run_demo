@@ -9,8 +9,13 @@ pipeline {
     stages{
         stage('Initialize Pipeline'){
             steps{
+                echo "Initializing"
+                // determine if the build was trigger from a git event or manually built with parameters
+                echo "${currentBuild.buildCauses}"
+                // all current build environment variables
+                echo sh(returnStdout: true, script: 'env')
                 echo "env setupRunning ${env.BUILD_ID} on ${env.JENKINS_URL}"
-		echo "something to print out"
+		        echo "something to print out"
                 envSetup()
             }
         }
