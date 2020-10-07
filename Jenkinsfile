@@ -22,7 +22,7 @@ pipeline {
             defaultValue: 'ex: ClassTest,Class2Test',
             description: 'If Test Level is "RunSpecifiedTests" then specify a comma seperated list of test classes to run. Ex: "AccountTriggerHandlerTest,LeadTriggerHandlerTest"')
     }
-    
+
     stages{
         stage('Initialize Pipeline'){
             steps{
@@ -111,5 +111,5 @@ def envSetup(){
     echo "#######################################"
     def CHANGE_TARGET = env.CHANGE_TARGET
     echo "#######################################"
-    echo "#######################################"
+    // echo "#######################################"
 }
