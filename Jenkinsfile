@@ -43,6 +43,11 @@ pipeline {
                 githubCheckout()
             }
         }
+        stage('SFDX Auth Target Org') {
+            steps {
+                authSF()
+            }
+        }
         stage('SFDX Deploy'){
             steps{
                 echo "Deploy Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
@@ -95,6 +100,7 @@ def githubCheckout() {
 }
 
 def getSFEvnParams() {
+    echo "getSFEnvParams"
     def fields = env.getEnvironment()
     def output = "";
     fields.each {
@@ -112,4 +118,31 @@ def envSetup(){
     def CHANGE_TARGET = env.CHANGE_TARGET
     echo "#######################################"
     // echo "#######################################"
+}
+
+def authSF() {
+    echo 'SF Auth method'
+    def SF_AUTH_URL
+    echo env.BRANCH_NAME
+
+    if ("${currentBuild.buildCauses}".contains("UserIdCause")) {
+        def fields = env.getEnvironment()
+        fields.each {
+            key, value -> if("${key}".contains("${params.target_environment}")) { SF_AUTH_URL = "${value}"; }
+        }
+    }
+    else if("${currentBuild.buildCauses}".contains("BranchEventCause")) {
+        if(env.BRANCH_NAME == 'master' || env.CHANGE_TARGET == 'master') {
+            SF_AUTH_URL = env.SFDX_DEV
+        }
+        else { // {PR} todo - better determine if its a PR env.CHANGE_TARGET?
+            SF_AUTH_URL = env.SFDX_DEV
+        }
+    }
+
+    echo SF_AUTH_URL
+    writeFile file: 'authjenkinsci.txt', text: SF_AUTH_URL
+    sh 'ls -l authjenkinsci.txt'
+    sh 'cat authjenkinsci.txt'
+    echo 'end sf auth method'
 }
