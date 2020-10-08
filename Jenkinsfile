@@ -59,45 +59,45 @@ pipeline {
     }
 }
 
-// def githubCheckout(){
-//     dir('github-checkout'){
-//         checkout scm
+def githubCheckout(){
+    dir('github-checkout'){
+        checkout scm
 
-//         commitChangeSet = sh(returnStdout: true, script: 'git diff-tree --no-commit-id --name-only -r HEAD')
-//         echo "github-checkout"
-//         echo "${commitChangeSet}"
-//         echo "${commitChangeSet.size()}"
-//     }
-
-//     echo "#######################################"
-//     echo "#######################################"
-//     echo "#######################################"
-//     echo "#######################################"
-//     echo "#######################################"
-
-//     sh 'ls github-checkout'
-//     echo "Current Git Commit : ${env.GIT_COMMIT}"
-//     echo "Previous Known successful Git commit: ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT}"
-// }
-
-def githubCheckout() {
-    dir('github-checkout') {
-        // determine if the build was trigger from a git event or manually built with parameters
-        if ("${currentBuild.buildCauses}".contains("UserIdCause")) {
-            echo "git checkout ${params.source_branch}"
-            // git checkout the branch
-            git credentialsId: 'pwId', url:'repoUrl', branch: "${params.source_branch}"
-        }
-        else if("${currentBuild.buildCauses}".contains("BranchEventCause")) {
-            echo "git checkout ${env.BRANCH_NAME}"
-            checkout scm
-        }
+        commitChangeSet = sh(returnStdout: true, script: 'git diff-tree --no-commit-id --name-only -r HEAD')
+        echo "github-checkout"
+        echo "${commitChangeSet}"
+        echo "${commitChangeSet.size()}"
     }
 
+    echo "#######################################"
+    echo "#######################################"
+    echo "#######################################"
+    echo "#######################################"
+    echo "#######################################"
+
     sh 'ls github-checkout'
-    echo "Current GIT Commit : ${env.GIT_COMMIT}"
-    echo "Previous Known Successful GIT Commit : ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT}"
+    echo "Current Git Commit : ${env.GIT_COMMIT}"
+    echo "Previous Known successful Git commit: ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT}"
 }
+
+// def githubCheckout() {
+//     dir('github-checkout') {
+//         // determine if the build was trigger from a git event or manually built with parameters
+//         if ("${currentBuild.buildCauses}".contains("UserIdCause")) {
+//             echo "git checkout ${params.source_branch}"
+//             // git checkout the branch
+//             git credentialsId: 'pwId', url:'repoUrl', branch: "${params.source_branch}"
+//         }
+//         else if("${currentBuild.buildCauses}".contains("BranchEventCause")) {
+//             echo "git checkout ${env.BRANCH_NAME}"
+//             checkout scm
+//         }
+//     }
+
+//     sh 'ls github-checkout'
+//     echo "Current GIT Commit : ${env.GIT_COMMIT}"
+//     echo "Previous Known Successful GIT Commit : ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT}"
+// }
 
 def getSFEvnParams() {
     echo "getSFEnvParams"
@@ -145,4 +145,12 @@ def authSF() {
     sh 'ls -l authjenkinsci.txt'
     sh 'cat authjenkinsci.txt'
     echo 'end sf auth method'
+}
+
+def command(script) {
+   if (isUnix()) {
+       return sh(returnStatus: true, script: script);
+   } else {
+       return bat(returnStatus: true, script: script);
+   }
 }
