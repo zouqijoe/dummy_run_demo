@@ -125,7 +125,7 @@ def authSF() {
     def SF_AUTH_URL
     echo env.BRANCH_NAME
     echo 'XXXXXXXXXXXXX'
-    // echo env
+    echo env
     // if ("${currentBuild.buildCauses}".contains("UserIdCause")) {
     //     def fields = env.getEnvironment()
     //     fields.each {
