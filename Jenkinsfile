@@ -135,9 +135,11 @@ def authSF() {
     }else if("${currentBuild.buildCauses}".contains("BranchEventCause")) {
         echo 'in else'
         if(env.BRANCH_NAME == 'master' || env.CHANGE_TARGET == 'master') {
+            echo env.SFDX_DEV
             SF_AUTH_URL = env.SFDX_DEV
         }
         else { // {PR} todo - better determine if its a PR env.CHANGE_TARGET?
+            echo env.SFDX_DEV
             SF_AUTH_URL = env.SFDX_DEV
         }
     }
