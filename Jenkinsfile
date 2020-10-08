@@ -127,12 +127,13 @@ def authSF() {
     echo 'XXXXXXXXXXXXX'
 
     if ("${currentBuild.buildCauses}".contains("UserIdCause")) {
+        echo 'in if'
         def fields = env.getEnvironment()
         fields.each {
             key, value -> if("${key}".contains("${params.target_environment}")) { SF_AUTH_URL = "${value}"; }
         }
-    }
-    else if("${currentBuild.buildCauses}".contains("BranchEventCause")) {
+    }else if("${currentBuild.buildCauses}".contains("BranchEventCause")) {
+        echo 'in else'
         if(env.BRANCH_NAME == 'master' || env.CHANGE_TARGET == 'master') {
             SF_AUTH_URL = env.SFDX_DEV
         }
