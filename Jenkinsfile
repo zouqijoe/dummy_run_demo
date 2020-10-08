@@ -140,8 +140,8 @@ def authSF() {
             SF_AUTH_URL = env.SFDX_DEV
         }
     }
-    // echo 'SF_AUTH_URL: '
-    // echo SF_AUTH_URL
+    echo 'SF_AUTH_URL: '
+    echo SF_AUTH_URL
     // writeFile file: 'authjenkinsci.txt', text: SF_AUTH_URL
     // sh 'ls -l authjenkinsci.txt'
     // sh 'cat authjenkinsci.txt'
