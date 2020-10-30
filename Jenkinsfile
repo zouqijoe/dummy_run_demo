@@ -14,4 +14,5 @@ node {
 	stage('checkout source'){
 		checkout scm
 	}
+	echo 'end'
 }
