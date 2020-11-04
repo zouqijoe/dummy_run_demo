@@ -170,8 +170,27 @@ node {
                 //     error 'Salesforce unit test run in pacakge install scratch org failed.'
                 // }
             }
+
+			// -------------------------------------------------------------------------
+            // Delete package install scratch org.
+            // -------------------------------------------------------------------------
+ 
+            stage('Delete Package Install Scratch Org') {
+                rc = command "sfdx force:org:delete --targetusername installorg --noprompt"
+                // if (rc != 0) {
+                //     error 'Salesforce package install scratch org deletion failed.'
+                // }
+            }
 		}
 
 	}
 	
+}
+
+def command(script) {
+    if (isUnix()) {
+        return sh(returnStatus: true, script: script);
+    } else {
+        return bat(returnStatus: true, script: script);
+    }
 }
