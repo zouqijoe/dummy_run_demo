@@ -35,12 +35,6 @@ node {
 				--jwtkeyfile ${server_key_file} \
 				--setdefaultdevhubusername --setalias HubOrg"
 				rc = command auth_command
-				// rc = command "sfdx force:auth:jwt:grant --instanceurl ${SF_INSTANCE_URL} --clientid ${SF_CONSUMER_KEY} --username ${SF_USERNAME} --jwtkeyfile ${server_key_file} --setdefaultdevhubusername --setalias HubOrg"
-                // if (rc != 0) {
-                //     error 'Salesforce dev hub org authorization failed.'
-                // } else {
-				// 	echo "OK"
-				// }
 				
             }
 
@@ -49,12 +43,8 @@ node {
             // -------------------------------------------------------------------------
  
             stage('Create Test Scratch Org') {
+                sleep 10
                 rc = command "sfdx force:org:create --targetdevhubusername HubOrg --setdefaultusername --definitionfile config/project-scratch-def.json --setalias ciorg --wait 10 --durationdays 1"
-                // if (rc != 0) {
-                //     error 'Salesforce test scratch org creation failed.'
-                // } else {
-				// 	echo 'OK'
-				// }
             }
 
 			// -------------------------------------------------------------------------
@@ -62,10 +52,8 @@ node {
             // -------------------------------------------------------------------------
  
             stage('Display Test Scratch Org') {
+                sleep 10
                 rc = command "sfdx force:org:display --targetusername ciorg"
-                // if (rc != 0) {
-                //     error 'Salesforce test scratch org display failed.'
-                // }
             }
 
 			// -------------------------------------------------------------------------
@@ -73,10 +61,8 @@ node {
             // -------------------------------------------------------------------------
  
             stage('Push To Test Scratch Org') {
+                sleep 10
                 rc = command "sfdx force:source:push --targetusername ciorg"
-                // if (rc != 0) {
-                //     error 'Salesforce push to test scratch org failed.'
-                // }
             }
 
 			// -------------------------------------------------------------------------
@@ -84,10 +70,8 @@ node {
             // -------------------------------------------------------------------------
  
             stage('Run Tests In Test Scratch Org') {
+                sleep 10
                 rc = command "sfdx force:apex:test:run --targetusername ciorg --wait 10 --resultformat tap --codecoverage --testlevel ${TEST_LEVEL}"
-                // if (rc != 0) {
-                //     error 'Salesforce unit test run in test scratch org failed.'
-                // }
             }
 
 			// -------------------------------------------------------------------------
@@ -95,10 +79,8 @@ node {
             // -------------------------------------------------------------------------
  
             stage('Delete Test Scratch Org') {
+                sleep 10
                 rc = command "sfdx force:org:delete --targetusername ciorg --noprompt"
-                // if (rc != 0) {
-                //     error 'Salesforce test scratch org deletion failed.'
-                // }
             }
 
 			// -------------------------------------------------------------------------
@@ -106,6 +88,7 @@ node {
             // -------------------------------------------------------------------------
  
             stage('Create Package Version') {
+                sleep 10
                 if (isUnix()) {
                     // output = sh returnStdout: true, script: "sfdx force:package:version:create --package ${PACKAGE_NAME} --installationkeybypass --wait 10 --json --targetdevhubusername HubOrg"
                 } else {
@@ -133,9 +116,6 @@ node {
             stage('Create Package Install Scratch Org') {
                 rc = command "sfdx force:org:create --targetdevhubusername HubOrg --setdefaultusername --definitionfile config/project-scratch-def.json --setalias installorg --wait 10 --durationdays 1"
 				sleep 30
-                // if (rc != 0) {
-                //     error 'Salesforce package install scratch org creation failed.'
-                // }
             }
 
 			// -------------------------------------------------------------------------
@@ -143,10 +123,8 @@ node {
             // -------------------------------------------------------------------------
  
             stage('Display Install Scratch Org') {
+                sleep 10
                 rc = command "sfdx force:org:display --targetusername installorg"
-                // if (rc != 0) {
-                //     error 'Salesforce install scratch org display failed.'
-                // }
             }
 
 			// -------------------------------------------------------------------------
@@ -155,9 +133,6 @@ node {
  
             stage('Install Package In Scratch Org') {
                 rc = command "sfdx force:package:install --package ${PACKAGE_VERSION} --targetusername installorg --wait 10"
-                // if (rc != 0) {
-                //     error 'Salesforce package install failed.'
-                // }
             }
 
 			// -------------------------------------------------------------------------
@@ -165,21 +140,16 @@ node {
             // -------------------------------------------------------------------------
  
             stage('Run Tests In Package Install Scratch Org') {
+                sleep 10
                 rc = command "sfdx force:apex:test:run --targetusername installorg --resultformat tap --codecoverage --testlevel ${TEST_LEVEL} --wait 10"
-                // if (rc != 0) {
-                //     error 'Salesforce unit test run in pacakge install scratch org failed.'
-                // }
             }
 
 			// -------------------------------------------------------------------------
             // Delete package install scratch org.
             // -------------------------------------------------------------------------
- 
             stage('Delete Package Install Scratch Org') {
+                sleep 5
                 rc = command "sfdx force:org:delete --targetusername installorg --noprompt"
-                // if (rc != 0) {
-                //     error 'Salesforce package install scratch org deletion failed.'
-                // }
             }
 		}
 
