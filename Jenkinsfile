@@ -9,7 +9,7 @@ node {
 	def SERVER_KEY_CREDENTALS_ID=env.SERVER_KEY_CREDENTALS_ID
 	def TEST_LEVEL='RunLocalTests'
 	def PACKAGE_NAME='0Ho1U000000CaUzSAK'
-	def PACKAGE_VERSION
+	def PACKAGE_VERSION = 'version-1.0'
 	def SF_INSTANCE_URL = env.SF_INSTANCE_URL ?: "https://login.salesforce.com"
 	def SF_WORKSPACE = env.WORKSPACE
 	
@@ -124,6 +124,40 @@ node {
                 response = null
  
                 // echo ${PACKAGE_VERSION}
+            }
+
+			// -------------------------------------------------------------------------
+            // Create new scratch org to install package to.
+            // -------------------------------------------------------------------------
+ 
+            stage('Create Package Install Scratch Org') {
+                rc = command "sfdx force:org:create --targetdevhubusername HubOrg --setdefaultusername --definitionfile config/project-scratch-def.json --setalias installorg --wait 10 --durationdays 1"
+				sleep 30
+                // if (rc != 0) {
+                //     error 'Salesforce package install scratch org creation failed.'
+                // }
+            }
+
+			// -------------------------------------------------------------------------
+            // Display install scratch org info.
+            // -------------------------------------------------------------------------
+ 
+            stage('Display Install Scratch Org') {
+                rc = command "sfdx force:org:display --targetusername installorg"
+                // if (rc != 0) {
+                //     error 'Salesforce install scratch org display failed.'
+                // }
+            }
+
+			// -------------------------------------------------------------------------
+            // Install package in scratch org.
+            // -------------------------------------------------------------------------
+ 
+            stage('Install Package In Scratch Org') {
+                rc = command "${toolbelt}/sfdx force:package:install --package ${PACKAGE_VERSION} --targetusername installorg --wait 10"
+                // if (rc != 0) {
+                //     error 'Salesforce package install failed.'
+                // }
             }
 		}
 
