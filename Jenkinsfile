@@ -109,12 +109,12 @@ node {
                 if (isUnix()) {
                     // output = sh returnStdout: true, script: "sfdx force:package:version:create --package ${PACKAGE_NAME} --installationkeybypass --wait 10 --json --targetdevhubusername HubOrg"
                 } else {
-                    output = bat(returnStdout: true, script: "sfdx force:package:version:create --package ${PACKAGE_NAME} --installationkeybypass --wait 10 --json --targetdevhubusername HubOrg").trim()
-                    output = output.readLines().drop(1).join(" ")
+                    // output = bat(returnStdout: true, script: "sfdx force:package:version:create --package ${PACKAGE_NAME} --installationkeybypass --wait 10 --json --targetdevhubusername HubOrg").trim()
+                    // output = output.readLines().drop(1).join(" ")
                 }
  
                 // Wait 5 minutes for package replication.
-                sleep 300
+                sleep 30
  
                 def jsonSlurper = new JsonSlurperClassic()
                 // def response = jsonSlurper.parseText(output)
