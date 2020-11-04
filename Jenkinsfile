@@ -17,5 +17,15 @@ node {
 	stage('checkout source'){
 		checkout scm
 	}
-	echo 'end'
+	echo 'stage begins ==> '
+	// -------------------------------------------------------------------------
+    // Run all the enclosed stages with access to the Salesforce
+    // JWT key credentials.
+    // -------------------------------------------------------------------------
+	withEnv(["HOME=${env.WORKSPACE}"]) {
+		echo 'withEnv hahaha'
+
+
+	}
+	
 }
