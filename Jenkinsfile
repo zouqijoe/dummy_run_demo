@@ -31,11 +31,11 @@ node {
 				echo SF_USERNAME
 				echo server_key_file
 				// def auth_command = "sfdx force:auth:jwt:grant --instanceurl ${SF_INSTANCE_URL} --clientid ${SF_CONSUMER_KEY} --username ${SF_USERNAME} --jwtkeyfile ${server_key_file} --setdefaultdevhubusername --setalias DummyHubOrg"
-				auth_command = "sfdx force:auth:jwt:grant --instanceurl https://login.salesforce.com \
+				def auth_command = "sfdx force:auth:jwt:grant --instanceurl https://login.salesforce.com \
 				--clientid 3MVG9l2zHsylwlpT1BabsPgulAjRSggtH7kjhi3A7.8rpM4WH5U8Y1EgO0y_r_najCDLa.P4X3ygGrh9bPNOh \
 				--username perfectionobsess@resilient-koala-2kki0f.com --jwtkeyfile ${server_key_file} \
 				--setdefaultdevhubusername --setalias DummyHubOrg"
-				
+
 				rc = command auth_command
 				// rc = command "sfdx force:auth:jwt:grant --instanceurl ${SF_INSTANCE_URL} --clientid ${SF_CONSUMER_KEY} --username ${SF_USERNAME} --jwtkeyfile ${server_key_file} --setdefaultdevhubusername --setalias DummyHubOrg"
                 if (rc != 0) {
