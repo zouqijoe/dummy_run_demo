@@ -154,9 +154,20 @@ node {
             // -------------------------------------------------------------------------
  
             stage('Install Package In Scratch Org') {
-                rc = command "${toolbelt}/sfdx force:package:install --package ${PACKAGE_VERSION} --targetusername installorg --wait 10"
+                rc = command "sfdx force:package:install --package ${PACKAGE_VERSION} --targetusername installorg --wait 10"
                 // if (rc != 0) {
                 //     error 'Salesforce package install failed.'
+                // }
+            }
+
+			// -------------------------------------------------------------------------
+            // Run unit tests in package install scratch org.
+            // -------------------------------------------------------------------------
+ 
+            stage('Run Tests In Package Install Scratch Org') {
+                rc = command "sfdx force:apex:test:run --targetusername installorg --resultformat tap --codecoverage --testlevel ${TEST_LEVEL} --wait 10"
+                // if (rc != 0) {
+                //     error 'Salesforce unit test run in pacakge install scratch org failed.'
                 // }
             }
 		}
