@@ -8,6 +8,8 @@ node {
 	def SF_USERNAME=env.SF_USERNAME
 	def SERVER_KEY_CREDENTALS_ID=env.SERVER_KEY_CREDENTALS_ID
 	def TEST_LEVEL='RunLocalTests'
+	def PACKAGE_NAME='0Ho1U000000CaUzSAK'
+	def PACKAGE_VERSION
 	def SF_INSTANCE_URL = env.SF_INSTANCE_URL ?: "https://login.salesforce.com"
 	def SF_WORKSPACE = env.WORKSPACE
 	
@@ -97,6 +99,31 @@ node {
                 // if (rc != 0) {
                 //     error 'Salesforce test scratch org deletion failed.'
                 // }
+            }
+
+			// -------------------------------------------------------------------------
+            // Create package version.
+            // -------------------------------------------------------------------------
+ 
+            stage('Create Package Version') {
+                if (isUnix()) {
+                    output = sh returnStdout: true, script: "sfdx force:package:version:create --package ${PACKAGE_NAME} --installationkeybypass --wait 10 --json --targetdevhubusername HubOrg"
+                } else {
+                    output = bat(returnStdout: true, script: "sfdx force:package:version:create --package ${PACKAGE_NAME} --installationkeybypass --wait 10 --json --targetdevhubusername HubOrg").trim()
+                    output = output.readLines().drop(1).join(" ")
+                }
+ 
+                // Wait 5 minutes for package replication.
+                sleep 300
+ 
+                def jsonSlurper = new JsonSlurperClassic()
+                def response = jsonSlurper.parseText(output)
+ 
+                PACKAGE_VERSION = response.result.SubscriberPackageVersionId
+ 
+                response = null
+ 
+                echo ${PACKAGE_VERSION}
             }
 		}
 
