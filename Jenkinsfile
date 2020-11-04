@@ -117,9 +117,9 @@ node {
                 sleep 300
  
                 def jsonSlurper = new JsonSlurperClassic()
-                def response = jsonSlurper.parseText(output)
+                // def response = jsonSlurper.parseText(output)
  
-                PACKAGE_VERSION = response.result.SubscriberPackageVersionId
+                // PACKAGE_VERSION = response.result.SubscriberPackageVersionId
  
                 response = null
  
