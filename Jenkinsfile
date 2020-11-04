@@ -24,7 +24,15 @@ node {
     // -------------------------------------------------------------------------
 	withEnv(["HOME=${env.WORKSPACE}"]) {
 		echo 'withEnv hahaha'
-
+		// -------------------------------------------------------------------------
+        // Authorize the Dev Hub org with JWT key and give it an alias.
+        // -------------------------------------------------------------------------
+		stage('Authorize DevHub') {
+                rc = command "sfdx force:auth:jwt:grant --instanceurl ${SF_INSTANCE_URL} --username ${SF_USERNAME} --setdefaultdevhubusername --setalias HubOrg"
+                if (rc != 0) {
+                    error 'Salesforce dev hub org authorization failed.'
+                }
+            }
 
 	}
 	
