@@ -10,7 +10,7 @@ node {
 	echo SF_USERNAME
 	echo SF_INSTANCE_URL
 	echo 'hello end'
-	def toolbelt = tool 'toolbelt'
+	// def toolbelt = tool 'toolbelt'
 	stage('checkout source'){
 		checkout scm
 	}
