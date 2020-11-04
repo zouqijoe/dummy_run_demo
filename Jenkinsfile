@@ -38,12 +38,25 @@ node {
 
 				rc = command auth_command
 				// rc = command "sfdx force:auth:jwt:grant --instanceurl ${SF_INSTANCE_URL} --clientid ${SF_CONSUMER_KEY} --username ${SF_USERNAME} --jwtkeyfile ${server_key_file} --setdefaultdevhubusername --setalias DummyHubOrg"
-                if (rc != 0) {
-                    error 'Salesforce dev hub org authorization failed.'
-                } else {
-					echo "OK"
-				}
+                // if (rc != 0) {
+                //     error 'Salesforce dev hub org authorization failed.'
+                // } else {
+				// 	echo "OK"
+				// }
 				
+            }
+
+			// -------------------------------------------------------------------------
+            // Create new scratch org to test your code.
+            // -------------------------------------------------------------------------
+ 
+            stage('Create Test Scratch Org') {
+                rc = command "sfdx force:org:create --targetdevhubusername HubOrg --setdefaultusername --definitionfile config/project-scratch-def.json --setalias ciorg --wait 10 --durationdays 1"
+                if (rc != 0) {
+                    error 'Salesforce test scratch org creation failed.'
+                } else {
+					echo 'OK'
+				}
             }
 		}
 
