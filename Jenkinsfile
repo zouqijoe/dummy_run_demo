@@ -38,6 +38,7 @@ node {
                 if (rc != 0) {
                     error 'Salesforce dev hub org authorization failed.'
                 }
+                echo 'hello'
 				
             }
 
