@@ -35,6 +35,9 @@ node {
 				--jwtkeyfile ${server_key_file} \
 				--setdefaultdevhubusername --setalias HubOrg"
 				rc = command auth_command
+                if (rc != 0) {
+                    error 'Salesforce dev hub org authorization failed.'
+                }
 				
             }
 
@@ -42,115 +45,115 @@ node {
             // Create new scratch org to test your code.
             // -------------------------------------------------------------------------
  
-            stage('Create Test Scratch Org') {
-                sleep 10
-                rc = command "sfdx force:org:create --targetdevhubusername HubOrg --setdefaultusername --definitionfile config/project-scratch-def.json --setalias ciorg --wait 10 --durationdays 1"
-            }
+            // stage('Create Test Scratch Org') {
+            //     sleep 10
+            //     rc = command "sfdx force:org:create --targetdevhubusername HubOrg --setdefaultusername --definitionfile config/project-scratch-def.json --setalias ciorg --wait 10 --durationdays 1"
+            // }
 
 			// -------------------------------------------------------------------------
             // Display test scratch org info.
             // -------------------------------------------------------------------------
  
-            stage('Display Test Scratch Org') {
-                sleep 10
-                rc = command "sfdx force:org:display --targetusername ciorg"
-            }
+            // stage('Display Test Scratch Org') {
+            //     sleep 10
+            //     rc = command "sfdx force:org:display --targetusername ciorg"
+            // }
 
 			// -------------------------------------------------------------------------
             // Push source to test scratch org.
             // -------------------------------------------------------------------------
  
-            stage('Push To Test Scratch Org') {
-                sleep 10
-                rc = command "sfdx force:source:push --targetusername ciorg"
-            }
+            // stage('Push To Test Scratch Org') {
+            //     sleep 10
+            //     rc = command "sfdx force:source:push --targetusername ciorg"
+            // }
 
 			// -------------------------------------------------------------------------
             // Run unit tests in test scratch org.
             // -------------------------------------------------------------------------
  
-            stage('Run Tests In Test Scratch Org') {
-                sleep 10
-                rc = command "sfdx force:apex:test:run --targetusername ciorg --wait 10 --resultformat tap --codecoverage --testlevel ${TEST_LEVEL}"
-            }
+            // stage('Run Tests In Test Scratch Org') {
+            //     sleep 10
+            //     rc = command "sfdx force:apex:test:run --targetusername ciorg --wait 10 --resultformat tap --codecoverage --testlevel ${TEST_LEVEL}"
+            // }
 
 			// -------------------------------------------------------------------------
             // Delete test scratch org.
             // -------------------------------------------------------------------------
  
-            stage('Delete Test Scratch Org') {
-                sleep 10
-                rc = command "sfdx force:org:delete --targetusername ciorg --noprompt"
-            }
+            // stage('Delete Test Scratch Org') {
+            //     sleep 10
+            //     rc = command "sfdx force:org:delete --targetusername ciorg --noprompt"
+            // }
 
 			// -------------------------------------------------------------------------
             // Create package version.
             // -------------------------------------------------------------------------
  
-            stage('Create Package Version') {
-                sleep 10
-                if (isUnix()) {
-                    // output = sh returnStdout: true, script: "sfdx force:package:version:create --package ${PACKAGE_NAME} --installationkeybypass --wait 10 --json --targetdevhubusername HubOrg"
-                } else {
-                    // output = bat(returnStdout: true, script: "sfdx force:package:version:create --package ${PACKAGE_NAME} --installationkeybypass --wait 10 --json --targetdevhubusername HubOrg").trim()
-                    // output = output.readLines().drop(1).join(" ")
-                }
+            // stage('Create Package Version') {
+            //     sleep 10
+            //     if (isUnix()) {
+            //         // output = sh returnStdout: true, script: "sfdx force:package:version:create --package ${PACKAGE_NAME} --installationkeybypass --wait 10 --json --targetdevhubusername HubOrg"
+            //     } else {
+            //         // output = bat(returnStdout: true, script: "sfdx force:package:version:create --package ${PACKAGE_NAME} --installationkeybypass --wait 10 --json --targetdevhubusername HubOrg").trim()
+            //         // output = output.readLines().drop(1).join(" ")
+            //     }
  
-                // Wait 5 minutes for package replication.
-                sleep 30
+            //     // Wait 5 minutes for package replication.
+            //     sleep 30
  
-                // def jsonSlurper = new JsonSlurperClassic()
-                // def response = jsonSlurper.parseText(output)
+            //     // def jsonSlurper = new JsonSlurperClassic()
+            //     // def response = jsonSlurper.parseText(output)
  
-                // PACKAGE_VERSION = response.result.SubscriberPackageVersionId
+            //     // PACKAGE_VERSION = response.result.SubscriberPackageVersionId
  
-                response = null
+            //     response = null
  
-                // echo ${PACKAGE_VERSION}
-            }
+            //     // echo ${PACKAGE_VERSION}
+            // }
 
 			// -------------------------------------------------------------------------
             // Create new scratch org to install package to.
             // -------------------------------------------------------------------------
  
-            stage('Create Package Install Scratch Org') {
-                rc = command "sfdx force:org:create --targetdevhubusername HubOrg --setdefaultusername --definitionfile config/project-scratch-def.json --setalias installorg --wait 10 --durationdays 1"
-				sleep 30
-            }
+    //         stage('Create Package Install Scratch Org') {
+    //             rc = command "sfdx force:org:create --targetdevhubusername HubOrg --setdefaultusername --definitionfile config/project-scratch-def.json --setalias installorg --wait 10 --durationdays 1"
+				// sleep 30
+    //         }
 
 			// -------------------------------------------------------------------------
             // Display install scratch org info.
             // -------------------------------------------------------------------------
  
-            stage('Display Install Scratch Org') {
-                sleep 10
-                rc = command "sfdx force:org:display --targetusername installorg"
-            }
+            // stage('Display Install Scratch Org') {
+            //     sleep 10
+            //     rc = command "sfdx force:org:display --targetusername installorg"
+            // }
 
 			// -------------------------------------------------------------------------
             // Install package in scratch org.
             // -------------------------------------------------------------------------
  
-            stage('Install Package In Scratch Org') {
-                rc = command "sfdx force:package:install --package ${PACKAGE_VERSION} --targetusername installorg --wait 10"
-            }
+            // stage('Install Package In Scratch Org') {
+            //     rc = command "sfdx force:package:install --package ${PACKAGE_VERSION} --targetusername installorg --wait 10"
+            // }
 
 			// -------------------------------------------------------------------------
             // Run unit tests in package install scratch org.
             // -------------------------------------------------------------------------
  
-            stage('Run Tests In Package Install Scratch Org') {
-                sleep 10
-                rc = command "sfdx force:apex:test:run --targetusername installorg --resultformat tap --codecoverage --testlevel ${TEST_LEVEL} --wait 10"
-            }
+            // stage('Run Tests In Package Install Scratch Org') {
+            //     sleep 10
+            //     rc = command "sfdx force:apex:test:run --targetusername installorg --resultformat tap --codecoverage --testlevel ${TEST_LEVEL} --wait 10"
+            // }
 
 			// -------------------------------------------------------------------------
             // Delete package install scratch org.
             // -------------------------------------------------------------------------
-            stage('Delete Package Install Scratch Org') {
-                sleep 5
-                rc = command "sfdx force:org:delete --targetusername installorg --noprompt"
-            }
+            // stage('Delete Package Install Scratch Org') {
+            //     sleep 5
+            //     rc = command "sfdx force:org:delete --targetusername installorg --noprompt"
+            // }
 		}
 
 	}
