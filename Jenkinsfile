@@ -13,6 +13,7 @@ node {
 	def SF_INSTANCE_URL = env.SF_INSTANCE_URL ?: "https://login.salesforce.com"
 	def SF_WORKSPACE = env.WORKSPACE
 	
+    def toolbelt = tool 'toolbelt'
 	// def toolbelt = tool 'toolbelt'
 	stage('checkout source'){
 		checkout scm
@@ -34,7 +35,7 @@ node {
 				// --username ${SF_USERNAME} \
 				// --jwtkeyfile ${server_key_file} \
 				// --setdefaultdevhubusername --setalias HubOrg"
-                def auth_command = "sfdx --version"
+                def auth_command = "${toolbelt}/sfdx --version"
 				rc = command auth_command
                 if (rc != 0) {
                     error 'Salesforce dev hub org authorization failed.'
