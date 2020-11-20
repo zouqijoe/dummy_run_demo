@@ -28,12 +28,13 @@ node {
         // Authorize the Dev Hub org with JWT key and give it an alias.
         // -------------------------------------------------------------------------
 		stage('Authorize DevHub') {
-				def auth_command = "sfdx force:auth:jwt:grant \
-				--instanceurl ${SF_INSTANCE_URL} \
-				--clientid ${SF_CONSUMER_KEY} \
-				--username ${SF_USERNAME} \
-				--jwtkeyfile ${server_key_file} \
-				--setdefaultdevhubusername --setalias HubOrg"
+				// def auth_command = "sfdx force:auth:jwt:grant \
+				// --instanceurl ${SF_INSTANCE_URL} \
+				// --clientid ${SF_CONSUMER_KEY} \
+				// --username ${SF_USERNAME} \
+				// --jwtkeyfile ${server_key_file} \
+				// --setdefaultdevhubusername --setalias HubOrg"
+                def auth_command = "sfdx --version"
 				rc = command auth_command
                 if (rc != 0) {
                     error 'Salesforce dev hub org authorization failed.'
