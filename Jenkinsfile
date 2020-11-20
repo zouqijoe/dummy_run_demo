@@ -3,7 +3,7 @@
 import groovy.json.JsonSlurperClassic
 
 
-// node {
+node {
 // 	def SF_CONSUMER_KEY=env.SF_CONSUMER_KEY
 // 	def SF_USERNAME=env.SF_USERNAME
 // 	def SERVER_KEY_CREDENTALS_ID=env.SERVER_KEY_CREDENTALS_ID
