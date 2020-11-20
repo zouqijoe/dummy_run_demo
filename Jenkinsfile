@@ -19,12 +19,13 @@ node {
 		checkout scm
 	}
 	echo 'stage begins ==> '
+    echo SF_WORKSPACE
 	// -------------------------------------------------------------------------
     // Run all the enclosed stages with access to the Salesforce
     // JWT key credentials.
     // -------------------------------------------------------------------------
-	withEnv(["HOME=${env.WORKSPACE}"]) {
-		withCredentials([file(credentialsId: SERVER_KEY_CREDENTALS_ID, variable: 'server_key_file')]) {
+	// withEnv(["HOME=${env.WORKSPACE}"]) {
+	// 	withCredentials([file(credentialsId: SERVER_KEY_CREDENTALS_ID, variable: 'server_key_file')]) {
 		// -------------------------------------------------------------------------
         // Authorize the Dev Hub org with JWT key and give it an alias.
         // -------------------------------------------------------------------------
@@ -159,9 +160,9 @@ node {
             //     sleep 5
             //     rc = command "sfdx force:org:delete --targetusername installorg --noprompt"
             // }
-		}
+		// }
 
-	}
+	// }
 	
 }
 
