@@ -36,7 +36,8 @@ node {
 				// --jwtkeyfile ${server_key_file} \
 				// --setdefaultdevhubusername --setalias HubOrg"
                 def auth_command = "sfdx --version"
-				rc = command auth_command
+				// rc = command auth_command
+                rc = command "sfdx --version"
                 echo rc
                 // if (rc != 0) {
                 //     error 'Salesforce dev hub org authorization failed.'
