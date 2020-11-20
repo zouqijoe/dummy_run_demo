@@ -3,15 +3,15 @@
 import groovy.json.JsonSlurperClassic
 
 
-node {
-	def SF_CONSUMER_KEY=env.SF_CONSUMER_KEY
-	def SF_USERNAME=env.SF_USERNAME
-	def SERVER_KEY_CREDENTALS_ID=env.SERVER_KEY_CREDENTALS_ID
-	def TEST_LEVEL='RunLocalTests'
-	def PACKAGE_NAME='0Ho1U000000CaUzSAK'
-	def PACKAGE_VERSION = 'version-1.0'
-	def SF_INSTANCE_URL = env.SF_INSTANCE_URL ?: "https://login.salesforce.com"
-	def SF_WORKSPACE = env.WORKSPACE
+// node {
+// 	def SF_CONSUMER_KEY=env.SF_CONSUMER_KEY
+// 	def SF_USERNAME=env.SF_USERNAME
+// 	def SERVER_KEY_CREDENTALS_ID=env.SERVER_KEY_CREDENTALS_ID
+// 	def TEST_LEVEL='RunLocalTests'
+// 	def PACKAGE_NAME='0Ho1U000000CaUzSAK'
+// 	def PACKAGE_VERSION = 'version-1.0'
+// 	def SF_INSTANCE_URL = env.SF_INSTANCE_URL ?: "https://login.salesforce.com"
+// 	def SF_WORKSPACE = env.WORKSPACE
 	
     // def toolbelt = tool 'toolbelt'
 	// def toolbelt = tool 'toolbelt'
@@ -19,7 +19,7 @@ node {
 		checkout scm
 	}
 	echo 'stage begins ==> '
-    echo SF_WORKSPACE
+    // echo SF_WORKSPACE
 	// -------------------------------------------------------------------------
     // Run all the enclosed stages with access to the Salesforce
     // JWT key credentials.
