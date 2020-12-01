@@ -24,7 +24,7 @@ node {
     // Run all the enclosed stages with access to the Salesforce
     // JWT key credentials.
     // -------------------------------------------------------------------------
-	// withEnv(["HOME=${env.WORKSPACE}"]) {
+	withEnv(["HOME=${env.WORKSPACE}"]) {
 	// 	withCredentials([file(credentialsId: SERVER_KEY_CREDENTALS_ID, variable: 'server_key_file')]) {
 		// -------------------------------------------------------------------------
         // Authorize the Dev Hub org with JWT key and give it an alias.
@@ -162,7 +162,7 @@ node {
             // }
 		// }
 
-	// }
+	}
 	
 }
 
